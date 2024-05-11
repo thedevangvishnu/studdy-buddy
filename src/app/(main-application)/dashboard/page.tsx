@@ -15,7 +15,7 @@ const DashboardPage = async () => {
 
           const { signOut } = authHandler;
           await signOut({
-            redirectTo: "/login",
+            redirectTo: "/auth/login",
           });
         }}
       >

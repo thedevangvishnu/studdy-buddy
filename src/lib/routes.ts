@@ -2,8 +2,8 @@
 
 export const publicRoutes = ["/"];
 
-export const authRoutes = ["/login"];
+export const authRoutes = ["/auth/login"];
 
 export const apiAuthPrefix = "/api/auth";
 
-export const PROFILE_PAGE_REDIRECT_URL = "dashboard";
+export const PROFILE_PAGE_REDIRECT_URL = "/dashboard";

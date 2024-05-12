@@ -4,6 +4,8 @@ import { useState } from "react";
 import { AiFillBulb } from "react-icons/ai";
 import { FaAngleLeft, FaHouse } from "react-icons/fa6";
 import { cn } from "@/lib/utils";
+import { sideBarMainMenu, sideBarBottomMenu } from "@/lib/sidebar-menu";
+import { MenuItem } from "./menu-item";
 
 export const Sidebar = () => {
   const [onlyIconView, setOnlyIconView] = useState(false);
@@ -17,7 +19,7 @@ export const Sidebar = () => {
   return (
     <>
       {/* logo div */}
-      <div className="absolute z-50 top-6 left-[1.55rem] flex items-center gap-1 cursor-pointer">
+      <div className="absolute h-14 z-50 top-4 left-[1.575rem] flex items-center gap-1 cursor-pointer">
         <AiFillBulb className="text-2xl" />
         {!onlyIconView && (
           <h1 className="hidden md:inline text-xl font-bold">StudyBuddy</h1>
@@ -27,10 +29,41 @@ export const Sidebar = () => {
       {/* main sidebar */}
       <aside
         className={cn(
-          "group/sidebar absolute bottom-0 w-full h-16 md:relative md:h-screen md:w-[240px] flex items-center md:flex-col md:items-start bg-secondary md:py-5 px-3 gap-y-6 transition-all duration-150 md:pt-20",
+          "group/sidebar absolute bottom-0 w-full h-16 md:relative md:h-screen md:w-56 flex items-center md:flex-col md:items-start bg-secondary md:py-5 px-3 gap-y-6 transition-all duration-150 md:pt-24",
           onlyIconView && "md:w-[80px]"
         )}
       >
+        {/* menu */}
+        <div className="w-full flex flex-row items-center justify-between md:flex-col md:items-start md:justify-start gap-y-1">
+          {sideBarMainMenu.map((menuItem) => (
+            <MenuItem
+              key={menuItem.label}
+              icon={menuItem.icon}
+              label={menuItem.label}
+              onlyIconView={onlyIconView}
+            />
+          ))}
+        </div>
+
+        <div className="hidden invisible md:mt-auto md:visible md:flex md:flex-col md:items-start md:justify-start gap-y-1">
+          {sideBarBottomMenu.map((menuItem) => (
+            <MenuItem
+              key={menuItem.label}
+              icon={menuItem.icon}
+              label={menuItem.label}
+              onlyIconView={onlyIconView}
+            />
+          ))}
+        </div>
+
+        {/* more options */}
+
+        {/* profile */}
+
+        {/* settings */}
+
+        {/* signout */}
+
         {/* arrow key for collapse/expand */}
         <div
           onClick={toggleIconOnlyView}
@@ -43,45 +76,7 @@ export const Sidebar = () => {
             )}
           />
         </div>
-
-        {/* width resetter */}
-
-        {/* logo */}
-
-        {/* menu */}
-        <div className="w-full flex flex-row items-center justify-between md:flex-col md:items-start md:justify-start gap-y-2">
-          <HoverWrap>
-            <div className="h-8 flex items-center gap-3">
-              <FaHouse className="h-5 w-5" />
-              {!onlyIconView && (
-                <span className="hidden md:inline">Dashboard</span>
-              )}
-            </div>
-          </HoverWrap>
-        </div>
-
-        {/* more options */}
-
-        {/* profile */}
-
-        {/* settings */}
-
-        {/* signout */}
       </aside>
     </>
-  );
-};
-
-const HoverWrap = ({
-  children,
-  onlyIconView,
-}: {
-  children: React.ReactNode;
-  onlyIconView?: boolean;
-}) => {
-  return (
-    <div className="py-2 px-4 hover:bg-background rounded-full cursor-pointer w-fit items-center">
-      {children}
-    </div>
   );
 };

@@ -17,7 +17,7 @@ export const Sidebar = () => {
   return (
     <>
       {/* logo div */}
-      <div className="absolute z-50 top-6 left-[1.6rem] flex items-center gap-1 cursor-pointer">
+      <div className="absolute z-50 top-6 left-[1.55rem] flex items-center gap-1 cursor-pointer">
         <AiFillBulb className="text-2xl" />
         {!onlyIconView && (
           <h1 className="hidden md:inline text-xl font-bold">StudyBuddy</h1>
@@ -34,10 +34,13 @@ export const Sidebar = () => {
         {/* arrow key for collapse/expand */}
         <div
           onClick={toggleIconOnlyView}
-          className="hidden invisible md:visible md:flex items-center absolute bottom-8 bg-background right-[-8px] h-5 w-5 p-1 rounded-full border-[2px] cursor-pointer opacity-0 group-hover/sidebar:opacity-100 z-40"
+          className="hidden invisible md:visible md:flex items-center absolute bottom-8 bg-muted-foreground hover:bg-accent-foreground transition-colors right-[-8px] h-5 w-5 p-1 rounded-full cursor-pointer opacity-0 group-hover/sidebar:opacity-100 z-40"
         >
           <FaAngleLeft
-            className={cn("text-sm", onlyIconView && "rotate-180")}
+            className={cn(
+              "text-sm text-background",
+              onlyIconView && "rotate-180"
+            )}
           />
         </div>
 

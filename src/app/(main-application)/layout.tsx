@@ -1,13 +1,13 @@
+import { Sidebar } from "./_components/sidebar";
 import React from "react";
-import { Sidenav } from "./_components/sidenav";
 
-const MainAppLayout = ({ children }: { children: React.ReactNode }) => {
+const MainLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="flex">
-      <Sidenav />
-      <div className="">{children}</div>
+      <Sidebar />
+      <div className="flex-1 h-screen">{children}</div>
     </div>
   );
 };
 
-export default MainAppLayout;
+export default MainLayout;

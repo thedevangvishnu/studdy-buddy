@@ -6,6 +6,8 @@ export const SectionContainer = ({
   children: React.ReactNode;
 }) => {
   return (
-    <div className="w-full h-full p-8 lg:p-10 overflow-y-auto">{children}</div>
+    <div className="w-full h-full p-6 md:p-8 lg:p-10 overflow-y-auto">
+      {children}
+    </div>
   );
 };

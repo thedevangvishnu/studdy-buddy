@@ -13,7 +13,7 @@ import React from "react";
 interface CardWrapperProps {
   title?: string;
   description?: string;
-  body?: React.ReactNode;
+  children: React.ReactNode;
   footer?: React.ReactNode;
   className?: string;
 }
@@ -21,19 +21,19 @@ interface CardWrapperProps {
 export const CardWrapper = ({
   title,
   description,
-  body,
+  children,
   footer,
   className,
 }: CardWrapperProps) => {
   return (
-    <Card className={cn("bg-secondary", className)}>
+    <Card className={cn("bg-secondary flex flex-col", className)}>
       {title && (
         <CardHeader>
           <CardTitle>{title}</CardTitle>
           <CardDescription>{description}</CardDescription>
         </CardHeader>
       )}
-      {body && <CardContent>{body}</CardContent>}
+      <CardContent>{children}</CardContent>
       {footer && <CardFooter>{footer}</CardFooter>}
     </Card>
   );

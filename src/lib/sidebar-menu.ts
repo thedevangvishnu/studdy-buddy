@@ -10,19 +10,23 @@ import {
 export const sideBarMainMenu = [
   {
     icon: FaHouse,
-    label: "Home",
+    label: "Dashboard",
+    link: "/dashboard",
   },
   {
     icon: FaClock,
-    label: "Clock",
+    label: "Session",
+    link: "/session",
   },
   {
     icon: FaListCheck,
     label: "Tasks",
+    link: "/tasks",
   },
   {
     icon: FaPenToSquare,
     label: "Notes",
+    link: "/notes",
   },
 ];
 
@@ -30,9 +34,11 @@ export const sideBarBottomMenu = [
   {
     icon: FaGear,
     label: "Preferences",
+    link: "/preferences",
   },
   {
     icon: FaArrowRightFromBracket,
     label: "Logout",
+    link: "",
   },
 ];

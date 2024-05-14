@@ -24,6 +24,8 @@ model User {
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
+  sessions      Session[]
+
   @@map("users")
 }
 
@@ -48,4 +50,19 @@ model Account {
  
   @@unique([provider, providerAccountId])
   @@map("accounts")
+}
+
+model Session {
+  id                    String        @id @default(cuid())
+  userId                String
+  createdAt             DateTime      @default(now())    
+  startTime             DateTime
+  endTime               DateTime?
+  breakTime             Int       
+  scheduledForLater     Boolean?      @default(false) 
+  scheduledSessionTime  Int?
+  notifyBefore          Boolean?      @default(false)
+  notifyBeforeTime      Int?          
+
+  user                  User           @relation(fields: [userId], references: [id])
 }

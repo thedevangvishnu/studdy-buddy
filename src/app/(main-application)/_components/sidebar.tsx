@@ -1,58 +1,71 @@
 "use client";
 
-import { useState } from "react";
 import { AiFillBulb } from "react-icons/ai";
 import { FaAngleLeft, FaHouse } from "react-icons/fa6";
 import { cn } from "@/lib/utils";
 import { sideBarMainMenu, sideBarBottomMenu } from "@/lib/sidebar-menu";
 import { MenuItem } from "./menu-item";
+import Link from "next/link";
 
-export const Sidebar = () => {
-  const [onlyIconView, setOnlyIconView] = useState(false);
-
+export const Sidebar = ({
+  onToggleSidebar,
+  isCollapsed,
+}: {
+  onToggleSidebar: () => void;
+  isCollapsed: boolean;
+}) => {
   const toggleIconOnlyView = () => {
     setTimeout(() => {
-      setOnlyIconView(!onlyIconView);
+      onToggleSidebar();
     }, 100);
   };
 
   return (
     <>
-      {/* logo div */}
-      <div className="absolute h-14 z-50 top-4 left-[1.575rem] flex items-center gap-1 cursor-pointer">
+      {/* for mobile only */}
+      <div className="fixed w-full h-14 z-40 top-0 left-0 md:hidden md:invisible flex items-center px-4 gap-1 cursor-pointer bg-muted">
+        {/* implemnet profile complement and nav for mobile */}
         <AiFillBulb className="text-2xl" />
-        {!onlyIconView && (
-          <h1 className="hidden md:inline text-xl font-bold">StudyBuddy</h1>
-        )}
       </div>
 
       {/* main sidebar */}
       <aside
         className={cn(
-          "group/sidebar absolute bottom-0 w-full h-16 md:relative md:h-screen md:w-56 flex items-center md:flex-col md:items-start bg-secondary md:py-5 px-3 gap-y-6 transition-all duration-150 md:pt-24",
-          onlyIconView && "md:w-[80px]"
+          "group/sidebar fixed bottom-0 w-full h-16 md:fixed md:left-0 md:h-screen md:w-56 flex items-center md:flex-col md:items-start bg-secondary md:py-5 px-3 gap-y-6 transition-all duration-150 md:pt-24 z-40",
+          isCollapsed && "md:w-[80px]"
         )}
       >
+        {/* logo */}
+        <div className="hidden invisible absolute h-14 z-50 top-4 left-[1.575rem] md:flex md:visible items-center gap-1 cursor-pointer">
+          <AiFillBulb className="text-2xl" />
+          {!isCollapsed && (
+            <h1 className="hidden md:inline text-xl font-bold">StudyBuddy</h1>
+          )}
+        </div>
+
         {/* menu */}
         <div className="w-full flex flex-row items-center justify-between md:flex-col md:items-start md:justify-start gap-y-1">
           {sideBarMainMenu.map((menuItem) => (
-            <MenuItem
-              key={menuItem.label}
-              icon={menuItem.icon}
-              label={menuItem.label}
-              onlyIconView={onlyIconView}
-            />
+            <Link key={menuItem.label} href={menuItem.link}>
+              <MenuItem
+                icon={menuItem.icon}
+                label={menuItem.label}
+                onlyIconView={isCollapsed}
+              />
+            </Link>
           ))}
         </div>
 
+        {/* settings and logout */}
         <div className="hidden invisible md:mt-auto md:visible md:flex md:flex-col md:items-start md:justify-start gap-y-1">
           {sideBarBottomMenu.map((menuItem) => (
-            <MenuItem
-              key={menuItem.label}
-              icon={menuItem.icon}
-              label={menuItem.label}
-              onlyIconView={onlyIconView}
-            />
+            <Link key={menuItem.label} href={menuItem.link}>
+              <MenuItem
+                icon={menuItem.icon}
+                label={menuItem.label}
+                onlyIconView={isCollapsed}
+              />
+            </Link>
           ))}
         </div>
 
@@ -72,7 +85,7 @@ export const Sidebar = () => {
           <FaAngleLeft
             className={cn(
               "text-sm text-background",
-              onlyIconView && "rotate-180"
+              isCollapsed && "rotate-180"
             )}
           />
         </div>

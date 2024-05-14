@@ -1,11 +1,30 @@
+"use client";
+
+import { cn } from "@/lib/utils";
 import { Sidebar } from "./_components/sidebar";
-import React from "react";
+import React, { useState } from "react";
 
 const MainLayout = ({ children }: { children: React.ReactNode }) => {
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+
+  const toggleSidebar = () => {
+    setIsSidebarCollapsed(!isSidebarCollapsed);
+  };
+
   return (
-    <div className="flex">
-      <Sidebar />
-      <div className="flex-1 h-screen">{children}</div>
+    <div className="relative flex w-full">
+      <Sidebar
+        onToggleSidebar={toggleSidebar}
+        isCollapsed={isSidebarCollapsed}
+      />
+      <div
+        className={cn(
+          "flex-1 md:ml-[224px] transition-all duration-150",
+          isSidebarCollapsed && "md:ml-[80px]"
+        )}
+      >
+        {children}
+      </div>
     </div>
   );
 };

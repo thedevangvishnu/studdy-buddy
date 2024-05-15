@@ -3,6 +3,7 @@
 import { cn } from "@/lib/utils";
 import { Sidebar } from "./_components/sidebar";
 import React, { useState } from "react";
+import { StudySessionContextProvider } from "@/contexts/study-session-context";
 
 const MainLayout = ({ children }: { children: React.ReactNode }) => {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
@@ -23,7 +24,7 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
           isSidebarCollapsed && "md:ml-[80px]"
         )}
       >
-        {children}
+        <StudySessionContextProvider>{children}</StudySessionContextProvider>
       </div>
     </div>
   );

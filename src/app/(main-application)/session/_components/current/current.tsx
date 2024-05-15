@@ -1,16 +1,15 @@
 import { CardWrapper } from "@/components/card-wrapper";
 import { Button } from "@/components/ui/button";
 import { Clock } from "../clocked/clock";
+import { useStudySessionContext } from "@/contexts/study-session-context";
 
-interface CurrentSessionProps {
-  sessionStarted: boolean;
-  onStartSession: () => void;
-}
+export const CurrentSession = () => {
+  const { isSessionActive, endSession } = useStudySessionContext();
 
-export const CurrentSession = ({
-  sessionStarted,
-  onStartSession,
-}: CurrentSessionProps) => {
+  const handleClick = () => {
+    endSession();
+  };
+
   return (
     <CardWrapper
       title="Current session"
@@ -19,14 +18,14 @@ export const CurrentSession = ({
     >
       <div className="flex flex-col gap-6">
         {/* create a clock */}
-        <Clock sessionStarted={sessionStarted} />
+        <Clock sessionStarted={isSessionActive} />
 
         {/* buttons to end/pause session */}
         <div className="w-full flex items-center justify-center gap-4">
-          <Button size="lg" disabled={!sessionStarted}>
+          <Button size="lg" disabled={!isSessionActive} onClick={handleClick}>
             Finish
           </Button>
-          <Button size="lg" variant="ghost" disabled={!sessionStarted}>
+          <Button size="lg" variant="ghost" disabled={!isSessionActive}>
             Pause
           </Button>
         </div>

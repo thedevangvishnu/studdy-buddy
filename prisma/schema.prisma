@@ -24,7 +24,7 @@ model User {
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
-  sessions      Session[]
+  studySession  StudySession[]
 
   @@map("users")
 }
@@ -52,17 +52,18 @@ model Account {
   @@map("accounts")
 }
 
-model Session {
-  id                    String        @id @default(cuid())
-  userId                String
-  createdAt             DateTime      @default(now())    
-  startTime             DateTime
-  endTime               DateTime?
-  breakTime             Int       
-  scheduledForLater     Boolean?      @default(false) 
-  scheduledSessionTime  Int?
-  notifyBefore          Boolean?      @default(false)
-  notifyBeforeTime      Int?          
+model StudySession {
+  id                        String        @id @default(cuid())
+  userId                    String
+  createdAt                 DateTime      @default(now())    
+  startTime                 DateTime
+  endTime                   DateTime?
+  breakDuration             Int?       
+  scheduledForLater         Boolean?      @default(false) 
+  scheduledSessionDuration  Int?
+  notifyBefore              Boolean?      @default(false)
+  notifyBeforeDuration      Int?          
 
-  user                  User           @relation(fields: [userId], references: [id])
+  user                      User           @relation(fields: [userId], references: [id])
+  @@map("study_sessions")
 }

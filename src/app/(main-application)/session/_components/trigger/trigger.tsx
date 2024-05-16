@@ -9,6 +9,12 @@ export const Trigger = () => {
 
   const handleClick = () => {
     startSession();
+    fetch("/api/study-session", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
   };
 
   return (

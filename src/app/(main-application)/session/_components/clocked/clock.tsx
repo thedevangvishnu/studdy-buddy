@@ -1,40 +1,64 @@
 import { formatTime } from "@/lib/time";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 
 interface ClockProps {
   sessionStarted: boolean;
+  sessionPaused: boolean;
 }
 
-export const Clock = ({ sessionStarted }: ClockProps) => {
+export const Clock = ({ sessionStarted, sessionPaused }: ClockProps) => {
   const [time, setTime] = useState({ hours: 0, mins: 0, secs: 0 });
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    let timer: NodeJS.Timeout;
-    if (sessionStarted) {
-      timer = setInterval(() => {
-        updateTime();
-      }, 1000);
+    console.log(
+      "useEffect - sessionStarted:",
+      sessionStarted,
+      "sessionPaused:",
+      sessionPaused
+    );
+    if (sessionStarted && !sessionPaused) {
+      startTimer();
+    } else {
+      stopTimer();
     }
-    return () => clearInterval(timer);
-  }, [sessionStarted]);
 
-  const updateTime = () => {
-    setTime((prevTime) => {
-      const newTime = { ...prevTime };
-      newTime.secs += 1;
+    return () => {
+      console.log("Cleanup from return() - executing stopTimer()");
+      stopTimer();
+    };
+  }, [sessionStarted, sessionPaused]);
 
-      if (newTime.secs === 60) {
-        newTime.secs = 0;
-        newTime.mins += 1;
+  const startTimer = () => {
+    if (timerRef.current !== null) return;
+    console.log("Starting timer");
 
-        if (newTime.mins === 60) {
-          newTime.mins = 0;
-          newTime.hours += 1;
+    timerRef.current = setInterval(() => {
+      setTime((prevTime) => {
+        const newTime = { ...prevTime };
+        newTime.secs += 1;
+
+        if (newTime.secs === 60) {
+          newTime.secs = 0;
+          newTime.mins += 1;
+
+          if (newTime.mins === 60) {
+            newTime.mins = 0;
+            newTime.hours += 1;
+          }
         }
-      }
 
-      return newTime;
-    });
+        return newTime;
+      });
+    }, 1000);
+  };
+
+  const stopTimer = () => {
+    if (timerRef.current !== null) {
+      console.log("Stopping timer");
+      clearInterval(timerRef.current);
+      timerRef.current = null;
+    }
   };
 
   return (

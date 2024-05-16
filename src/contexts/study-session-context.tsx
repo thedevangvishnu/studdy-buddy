@@ -2,13 +2,31 @@ import { createContext, useContext, useState } from "react";
 
 interface StudySessionContextProps {
   isSessionActive: boolean;
+  startTime: Date | null;
+  endTime: Date | null;
+  breakTime: number;
+  isSessionPaused: boolean;
   startSession: () => void;
-  endSession: () => void;
+  pauseUnpause: () => void;
+  endSession: (breakDuration?: number) => void;
 }
 
-const StudySessionContext = createContext<SessionContextProps>({
+interface StudySessionStateProps {
+  isSessionActive: boolean;
+  startTime: Date | null;
+  endTime: Date | null;
+  breakTime: number;
+  isSessionPaused: boolean;
+}
+
+const StudySessionContext = createContext<StudySessionContextProps>({
   isSessionActive: false,
+  startTime: null,
+  endTime: null,
+  breakTime: 0,
+  isSessionPaused: false,
   startSession: () => {},
+  pauseUnpause: () => {},
   endSession: () => {},
 });
 
@@ -17,20 +35,50 @@ export const StudySessionContextProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const [active, setActive] = useState(false);
+  const [studySession, setStudySession] = useState<StudySessionStateProps>({
+    isSessionActive: false,
+    startTime: null,
+    endTime: null,
+    breakTime: 0,
+    isSessionPaused: false,
+  });
+
   const startSession = () => {
-    setActive(true);
+    const startTime = new Date();
+
+    setStudySession((session) => {
+      return { ...session, isSessionActive: true, startTime: startTime };
+    });
   };
 
-  const endSession = () => {
-    setActive(false);
+  const pauseUnpause = () => {
+    setStudySession((session) => ({
+      ...session,
+      isSessionPaused: !session.isSessionPaused,
+    }));
+  };
+
+  const endSession = (breakDuration: number) => {
+    // note the endTime and breakTime
+    const endTime = new Date();
+
+    setStudySession((session) => ({
+      ...session,
+      endTime,
+      breakTime: breakDuration,
+    }));
   };
 
   return (
     <StudySessionContext.Provider
       value={{
-        isSessionActive: active,
+        isSessionActive: studySession.isSessionActive,
+        startTime: studySession.startTime,
+        endTime: studySession.endTime,
+        breakTime: studySession.breakTime,
+        isSessionPaused: studySession.isSessionPaused,
         startSession,
+        pauseUnpause,
         endSession,
       }}
     >

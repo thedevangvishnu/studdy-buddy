@@ -2,10 +2,11 @@ import { authHandler } from "@/auth";
 import { createStudySession } from "@/data/study-session";
 import { NextRequest, NextResponse } from "next/server";
 
+// create a new study session
 export async function POST(req: NextRequest) {
   const session = await authHandler.auth();
 
-  // create a nwe studySession {} that will have data that a new study session should have based on the scehma. Call createStudySession from data folder and make the db query.
+  // create a new studySession {} that will have data that a new study session should have based on the scehma. Call createStudySession from data folder and make the db query.
 
   // return studySession id and a success message
 
@@ -22,7 +23,7 @@ export async function POST(req: NextRequest) {
 
   const response = await createStudySession(userId, startTime);
 
-  if (!response) {
+  if (response === null) {
     return NextResponse.json(
       { error: "Something went wrong!" },
       { status: 500 }

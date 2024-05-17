@@ -4,29 +4,37 @@ interface StudySessionContextProps {
   isSessionActive: boolean;
   startTime: Date | null;
   endTime: Date | null;
-  breakTime: number;
+  breakDuration: number;
   isSessionPaused: boolean;
+  isSessionFinished: boolean;
   startSession: () => void;
   pauseUnpause: () => void;
+  finishSession: () => void;
+  discardSession: () => void;
   endSession: (breakDuration?: number) => void;
 }
 
-interface StudySessionStateProps {
-  isSessionActive: boolean;
-  startTime: Date | null;
-  endTime: Date | null;
-  breakTime: number;
-  isSessionPaused: boolean;
-}
+type StudySessionStateProps = Pick<
+  StudySessionContextProps,
+  | "isSessionActive"
+  | "isSessionPaused"
+  | "isSessionFinished"
+  | "startTime"
+  | "endTime"
+  | "breakDuration"
+>;
 
 const StudySessionContext = createContext<StudySessionContextProps>({
   isSessionActive: false,
   startTime: null,
   endTime: null,
-  breakTime: 0,
+  breakDuration: 0,
   isSessionPaused: false,
+  isSessionFinished: false,
   startSession: () => {},
   pauseUnpause: () => {},
+  finishSession: () => {},
+  discardSession: () => {},
   endSession: () => {},
 });
 
@@ -39,8 +47,9 @@ export const StudySessionContextProvider = ({
     isSessionActive: false,
     startTime: null,
     endTime: null,
-    breakTime: 0,
+    breakDuration: 0,
     isSessionPaused: false,
+    isSessionFinished: false,
   });
 
   const startSession = () => {
@@ -58,6 +67,28 @@ export const StudySessionContextProvider = ({
     }));
   };
 
+  // this function is for the frontend to stop the running clock and open a dialog for user to whether they want save or discard the session
+  const finishSession = () => {
+    setStudySession((session) => ({
+      ...session,
+      isSessionFinished: !session.isSessionFinished,
+    }));
+  };
+
+  const discardSession = () => {
+    const reset = {
+      isSessionActive: false,
+      startTime: null,
+      endTime: null,
+      breakDuration: 0,
+      isSessionPaused: false,
+      isSessionFinished: false,
+    };
+
+    setStudySession(reset);
+  };
+
+  // this function is for taking the finished session and taking in all necessary info like startTine, breakDuration, endTime and make the fetch request to crate a new study session
   const endSession = (breakDuration: number) => {
     // note the endTime and breakTime
     const endTime = new Date();
@@ -75,10 +106,13 @@ export const StudySessionContextProvider = ({
         isSessionActive: studySession.isSessionActive,
         startTime: studySession.startTime,
         endTime: studySession.endTime,
-        breakTime: studySession.breakTime,
+        breakDuration: studySession.breakDuration,
         isSessionPaused: studySession.isSessionPaused,
+        isSessionFinished: studySession.isSessionFinished,
         startSession,
         pauseUnpause,
+        finishSession,
+        discardSession,
         endSession,
       }}
     >

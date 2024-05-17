@@ -4,58 +4,62 @@ import React, { useEffect, useState, useRef } from "react";
 interface ClockProps {
   sessionStarted: boolean;
   sessionPaused: boolean;
+  sessionFinished: boolean;
 }
 
-export const Clock = ({ sessionStarted, sessionPaused }: ClockProps) => {
+export const Clock = ({
+  sessionStarted,
+  sessionPaused,
+  sessionFinished,
+}: ClockProps) => {
   const [time, setTime] = useState({ hours: 0, mins: 0, secs: 0 });
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    console.log(
-      "useEffect - sessionStarted:",
-      sessionStarted,
-      "sessionPaused:",
-      sessionPaused
-    );
-    if (sessionStarted && !sessionPaused) {
-      startTimer();
+    if (sessionStarted && !sessionPaused && !sessionFinished) {
+      startClock();
+    } else if (sessionPaused || sessionFinished) {
+      stopClock();
     } else {
-      stopTimer();
+      resetClock();
     }
 
-    return () => {
-      console.log("Cleanup from return() - executing stopTimer()");
-      stopTimer();
-    };
-  }, [sessionStarted, sessionPaused]);
+    return () => stopClock();
+  }, [sessionStarted, sessionPaused, sessionFinished]);
 
-  const startTimer = () => {
+  const startClock = () => {
     if (timerRef.current !== null) return;
-    console.log("Starting timer");
 
     timerRef.current = setInterval(() => {
       setTime((prevTime) => {
-        const newTime = { ...prevTime };
-        newTime.secs += 1;
+        const nextTime = { ...prevTime };
+        nextTime.secs += 1;
 
-        if (newTime.secs === 60) {
-          newTime.secs = 0;
-          newTime.mins += 1;
+        if (nextTime.secs === 60) {
+          nextTime.secs = 0;
+          nextTime.mins += 1;
 
-          if (newTime.mins === 60) {
-            newTime.mins = 0;
-            newTime.hours += 1;
+          if (nextTime.mins === 60) {
+            nextTime.mins = 0;
+            nextTime.hours += 1;
           }
         }
 
-        return newTime;
+        return nextTime;
       });
     }, 1000);
   };
 
-  const stopTimer = () => {
+  const stopClock = () => {
     if (timerRef.current !== null) {
-      console.log("Stopping timer");
+      clearInterval(timerRef.current);
+      timerRef.current = null;
+    }
+  };
+
+  const resetClock = () => {
+    setTime({ hours: 0, mins: 0, secs: 0 });
+    if (timerRef.current !== null) {
       clearInterval(timerRef.current);
       timerRef.current = null;
     }

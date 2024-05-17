@@ -9,12 +9,8 @@ import { Terminate } from "../terminate";
 import { DialogTrigger } from "@radix-ui/react-dialog";
 
 export const CurrentSession = () => {
-  const { isSessionActive, isSessionPaused, pauseUnpause } =
+  const { isSessionActive, isSessionPaused, isSessionFinished, pauseUnpause } =
     useStudySessionContext();
-
-  // const handleClick = () => {
-  //   pauseUnpause();
-  // };
 
   return (
     <>
@@ -28,17 +24,20 @@ export const CurrentSession = () => {
           <Clock
             sessionStarted={isSessionActive}
             sessionPaused={isSessionPaused}
+            sessionFinished={isSessionFinished}
           />
 
           {/* buttons to end/pause session */}
           <div className="w-full flex items-center justify-center gap-4">
-            {/* <Button size="lg" disabled={!isSessionActive} onClick={handleClick}>
-              Finish
-            </Button> */}
             <Terminate disabled={!isSessionActive} />
 
-            <Button size="lg" variant="ghost" disabled={!isSessionActive}>
-              Pause
+            <Button
+              size="lg"
+              variant="ghost"
+              disabled={!isSessionActive && !isSessionPaused}
+              onClick={pauseUnpause}
+            >
+              {isSessionPaused ? "Unpause" : "Pause"}
             </Button>
           </div>
         </div>

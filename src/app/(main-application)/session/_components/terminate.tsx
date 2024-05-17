@@ -13,7 +13,7 @@ import { useStudySessionContext } from "@/contexts/study-session-context";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 
-const breakTimes = [
+const options = [
   {
     label: "None",
     value: 0,
@@ -41,9 +41,9 @@ interface TerminateProps {
 }
 
 export function Terminate({ disabled }: TerminateProps) {
-  const { isSessionFinished, finishSession, discardSession } =
+  const { isSessionFinished, finishSession, discardSession, endSession } =
     useStudySessionContext();
-  const [selected, setSelected] = useState(0);
+  const [selected, setSelected] = useState(0); // contains the selected value for break duration
   const [isDiscarding, setIsDiscarding] = useState(false);
 
   const handleTagClick = (value: number) => {
@@ -51,7 +51,8 @@ export function Terminate({ disabled }: TerminateProps) {
   };
 
   const handleSave = () => {
-    console.log("breaktime", selected);
+    // call endSession and pass the break duration
+    endSession(selected);
   };
 
   const handleOnOpenChange = () => {
@@ -83,18 +84,18 @@ export function Terminate({ disabled }: TerminateProps) {
           </div>
 
           <div className="flex gap-2 items-center flex-wrap">
-            {breakTimes.map((breakTime) => (
+            {options.map((option) => (
               <div
-                key={breakTime.value}
-                onClick={() => handleTagClick(breakTime.value)}
+                key={option.value}
+                onClick={() => handleTagClick(option.value)}
                 className={cn(
                   "min-w-16 py-2 flex items-center justify-center text-sm cursor-pointer rounded-md text-muted-foreground border-[1px] font-semibold  duration-150 transition-all",
-                  selected === breakTime.value
+                  selected === option.value
                     ? "border-foreground bg-muted-foreground text-secondary"
                     : "hover:bg-secondary hover:text-foreground"
                 )}
               >
-                {breakTime.label}
+                {option.label}
               </div>
             ))}
           </div>

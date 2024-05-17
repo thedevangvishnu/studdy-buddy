@@ -1,6 +1,5 @@
 import { useStudySessionContext } from "@/contexts/study-session-context";
 import { formatTime } from "@/lib/time";
-import React, { useEffect, useState, useRef } from "react";
 
 export const Clock = () => {
   const { currentTime } = useStudySessionContext();

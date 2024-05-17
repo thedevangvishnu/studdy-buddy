@@ -1,29 +1,39 @@
 import { authHandler } from "@/auth";
-import { createStudySession } from "@/data/study-session";
+import { createStudySession, saveStudySession } from "@/data/study-session";
+import { SaveSessionSchema } from "@/schema/study-session-schema";
 import { NextRequest, NextResponse } from "next/server";
 
 // create a new study session
 export async function POST(req: NextRequest) {
   const session = await authHandler.auth();
-
-  // create a new studySession {} that will have data that a new study session should have based on the scehma. Call createStudySession from data folder and make the db query.
-
-  // return studySession id and a success message
-
-  //    each new studySession will have the following details:
-  /**
-   * userId
-   * startTime
-   *
-   *
-   */
-
   const userId = session?.user.userId!;
-  const startTime = new Date();
 
-  const response = await createStudySession(userId, startTime);
+  const body = await req.json();
 
-  if (response === null) {
+  // Zod .date() expects native Date object.The date in the payload is in ISO string format. Convert to the native Date object for successful validation
+  const updatedBody = {
+    ...body,
+    startTime: new Date(body.startTime),
+    endTime: new Date(body.endTime),
+  };
+
+  const validatedFields = SaveSessionSchema.safeParse(updatedBody);
+
+  if (!validatedFields.success) {
+    return NextResponse.json({ error: "Invalid inputs!" }, { status: 400 });
+  }
+
+  const { startTime, endTime, breakDuration } = body;
+
+  const studySessionInfo = {
+    userId,
+    startTime,
+    endTime,
+    breakDuration,
+  };
+  const created = await saveStudySession(studySessionInfo);
+
+  if (!created) {
     return NextResponse.json(
       { error: "Something went wrong!" },
       { status: 500 }
@@ -31,7 +41,7 @@ export async function POST(req: NextRequest) {
   }
 
   return NextResponse.json(
-    { message: "Study session started" },
+    { message: "Session saved!", id: created.id },
     { status: 201 }
   );
 }

@@ -9,7 +9,7 @@ import { Terminate } from "../terminate";
 import { DialogTrigger } from "@radix-ui/react-dialog";
 
 export const CurrentSession = () => {
-  const { isSessionActive, isSessionPaused, isSessionFinished, pauseUnpause } =
+  const { isSessionActive, isSessionPaused, pauseUnpause } =
     useStudySessionContext();
 
   return (

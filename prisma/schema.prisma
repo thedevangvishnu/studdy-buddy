@@ -58,11 +58,11 @@ model StudySession {
   createdAt                 DateTime      @default(now())    
   startTime                 DateTime
   endTime                   DateTime?
-  breakDuration             Int?       
+  breakDuration             Int?          @default(0)
   scheduledForLater         Boolean?      @default(false) 
-  scheduledSessionDuration  Int?
+  scheduledSessionDuration  Int?          @default(0)
   notifyBefore              Boolean?      @default(false)
-  notifyBeforeDuration      Int?          
+  notifyBeforeDuration      Int?          @default(0)
 
   user                      User           @relation(fields: [userId], references: [id])
   @@map("study_sessions")

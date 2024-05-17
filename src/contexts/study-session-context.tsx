@@ -1,4 +1,6 @@
 import { createContext, useContext, useState, useEffect, useRef } from "react";
+import { useMutation } from "react-query";
+import * as requests from "../lib/requests";
 
 interface TimeProps {
   hr: number;
@@ -18,8 +20,7 @@ interface StudySessionContextProps {
   pauseUnpause: () => void;
   finishSession: () => void;
   discardSession: () => void;
-  endSession: (breakDuration?: number) => void;
-  updateTime: (time: TimeProps) => void;
+  endSession: (breakDuration: number) => void;
 }
 
 type StudySessionStateProps = Pick<
@@ -45,7 +46,6 @@ const StudySessionContext = createContext<StudySessionContextProps>({
   finishSession: () => {},
   discardSession: () => {},
   endSession: () => {},
-  updateTime: () => {},
 });
 
 export const StudySessionContextProvider = ({
@@ -99,19 +99,41 @@ export const StudySessionContextProvider = ({
   };
 
   // this function is for taking the finished session and taking in all necessary info like startTine, breakDuration, endTime and make the fetch request to crate a new study session
-  const endSession = (breakDuration: number) => {
+
+  const { mutate, isLoading } = useMutation(requests.saveSession, {
+    onSuccess: (data) => {
+      setStudySession({
+        isSessionActive: false,
+        startTime: null,
+        endTime: null,
+        breakDuration: 0,
+        isSessionPaused: false,
+        isSessionFinished: false,
+      });
+      console.log(data);
+    },
+    onError: (err: Error) => {
+      console.log(err.message);
+    },
+  });
+
+  const endSession = async (breakDuration: number) => {
     // note the endTime and breakTime
     const endTime = new Date();
 
-    setStudySession((session) => ({
-      ...session,
-      endTime,
-      breakTime: breakDuration,
-    }));
-  };
+    console.log(breakDuration);
 
-  const updateTime = (time: TimeProps) => {
-    setStudySession((session) => ({ ...session, time }));
+    // todo: check for invalid breakDuration, what if breakDuration > endTime - startTime
+
+    // make the fetch request to backend and pass all the information from the studySession state adn then reset the state for a new study session.
+    const session = {
+      startTime: studySession.startTime!,
+      endTime,
+      breakDuration,
+    };
+
+    // create a hook for to make this call or use react-query useMutation
+    mutate(session);
   };
 
   //////////////////////////////
@@ -194,7 +216,6 @@ export const StudySessionContextProvider = ({
         finishSession,
         discardSession,
         endSession,
-        updateTime,
       }}
     >
       {children}

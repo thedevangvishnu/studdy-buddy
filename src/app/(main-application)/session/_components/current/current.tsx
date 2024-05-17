@@ -21,11 +21,7 @@ export const CurrentSession = () => {
       >
         <div className="flex flex-col gap-6">
           {/* create a clock */}
-          <Clock
-            sessionStarted={isSessionActive}
-            sessionPaused={isSessionPaused}
-            sessionFinished={isSessionFinished}
-          />
+          <Clock />
 
           {/* buttons to end/pause session */}
           <div className="w-full flex items-center justify-center gap-4">

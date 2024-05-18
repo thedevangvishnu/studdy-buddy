@@ -27,3 +27,21 @@ Each study session should have:
 Each session will be calculated using startTime, endTime and breakTime
 
 Add feature of invite friends to study. Make closed group feature for focused studying.
+
+## Bugs and Fixes
+
+###### next-auth: trying to turn emailVerified of social-sign account to true from inside the signIn callback
+
+###### useEfect log statement followed by clean up log statement followed by useEffect log statement
+
+###### `<Dialog>` component open and onOpenChange props
+
+###### Dates send from frontend fail zod.date() validation
+
+###### how to select and capture value of a div/component from a bunch of divs/components
+
+######
+
+######
+
+######

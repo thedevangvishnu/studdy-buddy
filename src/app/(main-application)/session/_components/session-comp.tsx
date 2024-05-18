@@ -13,7 +13,7 @@ export const SessionComp = () => {
         {/* section title compnent */}
 
         {/* upper section */}
-        <div className="w-full flex flex-col md:flex-row items-center gap-4">
+        <div className="w-full flex flex-col gap-8 lg:flex-row items-center lg:gap-5">
           <Trigger />
           <CurrentSession />
         </div>

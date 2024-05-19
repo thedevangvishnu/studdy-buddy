@@ -2,7 +2,7 @@
 
 import { CardWrapper } from "@/components/card-wrapper";
 import { Button } from "@/components/ui/button";
-import { Clock } from "../clocked/clock";
+import { Clock } from "../clock";
 import { useStudySessionContext } from "@/contexts/study-session-context";
 import { useState } from "react";
 import { Terminate } from "../terminate";

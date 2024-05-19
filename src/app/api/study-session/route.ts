@@ -1,5 +1,5 @@
 import { authHandler } from "@/auth";
-import { createStudySession, saveStudySession } from "@/data/study-session";
+import { saveStudySession, getStudySessionsByDate } from "@/data/study-session";
 import { SaveSessionSchema } from "@/schema/study-session-schema";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -25,6 +25,9 @@ export async function POST(req: NextRequest) {
 
   const { startTime, endTime, breakDuration } = body;
 
+  // to do --> calculate the total study session time in milliseconds and save to schema. (Might have to change the schema first)
+
+  // add a validation that each session must be atleast 10mins and breaktime >= endTime - sessionTime
   const studySessionInfo = {
     userId,
     startTime,
@@ -43,5 +46,37 @@ export async function POST(req: NextRequest) {
   return NextResponse.json(
     { message: "Session saved!", id: created.id },
     { status: 201 }
+  );
+}
+
+export async function GET(req: NextRequest) {
+  // send all the study session of this user for the date,sent in the request query params
+
+  const session = await authHandler.auth();
+  const userId = session?.user.userId;
+
+  const { searchParams } = req.nextUrl;
+  const query = searchParams.get("date");
+
+  if (!query) {
+    return NextResponse.json({ error: "Missing date!" }, { status: 400 });
+  }
+
+  const date = new Date(query);
+
+  // using this date, make the query to db and extract all the study-session for this date for this user.
+
+  const studySessions = await getStudySessionsByDate(date, userId!);
+
+  if (!studySessions) {
+    return NextResponse.json(
+      { error: "Something went wrong!" },
+      { status: 500 }
+    );
+  }
+
+  return NextResponse.json(
+    { message: "Found!", studySessions },
+    { status: 200 }
   );
 }

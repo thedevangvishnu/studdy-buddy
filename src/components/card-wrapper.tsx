@@ -26,14 +26,14 @@ export const CardWrapper = ({
   className,
 }: CardWrapperProps) => {
   return (
-    <Card className={cn("bg-secondary flex flex-col", className)}>
+    <Card className={cn("bg-secondary flex flex-col relative", className)}>
       {title && (
         <CardHeader>
           <CardTitle>{title}</CardTitle>
           <CardDescription>{description}</CardDescription>
         </CardHeader>
       )}
-      <CardContent>{children}</CardContent>
+      <CardContent className="relative">{children}</CardContent>
       {footer && <CardFooter>{footer}</CardFooter>}
     </Card>
   );

@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect, useRef } from "react";
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import * as requests from "../lib/requests";
 
 interface TimeProps {
@@ -100,8 +100,9 @@ export const StudySessionContextProvider = ({
 
   // this function is for taking the finished session and taking in all necessary info like startTine, breakDuration, endTime and make the fetch request to crate a new study session
 
+  const queryClient = useQueryClient();
   const { mutate, isLoading } = useMutation(requests.saveSession, {
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       setStudySession({
         isSessionActive: false,
         startTime: null,
@@ -110,7 +111,9 @@ export const StudySessionContextProvider = ({
         isSessionPaused: false,
         isSessionFinished: false,
       });
-      console.log(data);
+      // show toast
+      // re validate the query
+      await queryClient.invalidateQueries("study-sessions");
     },
     onError: (err: Error) => {
       console.log(err.message);

@@ -18,3 +18,18 @@ export const saveSession = async (session: SaveSessionType) => {
 
   return responseBody.message;
 };
+
+export const getStudySessionsByDate = async (date: Date) => {
+  const response = await fetch(`/api/study-session?date=${date}`, {
+    method: "GET",
+    credentials: "include",
+  });
+
+  const responseBody = await response.json();
+
+  if (!response.ok) {
+    throw new Error(responseBody.error);
+  }
+
+  return responseBody;
+};

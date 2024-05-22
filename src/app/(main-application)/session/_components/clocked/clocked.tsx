@@ -13,7 +13,7 @@ export const Clocked = ({
       description="Showing all your sessions"
       className="w-full h-full"
     >
-      <div className="flex flex-col">
+      <div className="flex flex-col h-[400px]">
         {studySessions?.map((session, index) => {
           const { hr, mins } = calculateDuration(
             session.startTime,

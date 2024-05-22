@@ -26,7 +26,7 @@ export const CardWrapper = ({
   className,
 }: CardWrapperProps) => {
   return (
-    <Card className={cn("bg-secondary flex flex-col relative", className)}>
+    <Card className={cn("bg-background flex flex-col relative", className)}>
       {title && (
         <CardHeader>
           <CardTitle>{title}</CardTitle>

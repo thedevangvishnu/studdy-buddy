@@ -31,7 +31,7 @@ export const Sidebar = ({
       {/* main sidebar */}
       <aside
         className={cn(
-          "group/sidebar fixed bottom-0 w-full h-16 md:fixed md:left-0 md:h-screen md:w-56 flex items-center md:flex-col md:items-start bg-secondary md:py-5 px-3 gap-y-6 transition-all duration-150 md:pt-24 z-40",
+          "group/sidebar fixed bottom-0 w-full h-16 md:fixed md:left-0 md:h-screen md:w-56 flex items-center md:flex-col md:items-start bg-background md:py-5 px-3 gap-y-6 transition-all duration-150 md:pt-24 z-40 border-right-border border-r-[1px]",
           isCollapsed && "md:w-[80px]"
         )}
       >

@@ -1,11 +1,34 @@
 import React, { useState } from "react";
-import { FaAnglesRight, FaB, FaBars } from "react-icons/fa6";
+import { FaAnglesRight, FaBars } from "react-icons/fa6";
 
-export const Hamburger = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
+interface HamburgerProps {
+  mobileViewActive: boolean;
+  toggleSidebar: () => void;
+  toggleSidebarInMobileView: () => void;
+}
+
+export const Hamburger = ({
+  mobileViewActive,
+  toggleSidebar,
+  toggleSidebarInMobileView,
+}: HamburgerProps) => {
   const [isHovered, setIsHovered] = useState(false);
+
+  if (mobileViewActive) {
+    return (
+      <div
+        className="w-5 h-5 relative cursor-pointer flex items-center justify-center"
+        onClick={toggleSidebarInMobileView}
+      >
+        <FaBars className="w-full h-full transition-transform duration-300" />
+      </div>
+    );
+  }
+
+  // for screen sizes greater than mobile
   return (
     <div
-      className="w-5 h-5  relative cursor-pointer flex items-center justify-center"
+      className="w-5 h-5 relative cursor-pointer flex items-center justify-center"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >

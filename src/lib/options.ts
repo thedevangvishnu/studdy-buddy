@@ -17,14 +17,14 @@ export const sideBarMainMenu = [
     link: "/dashboard",
   },
   {
-    icon: FaClock,
-    label: "Session",
-    link: "/session",
-  },
-  {
     icon: FaListCheck,
     label: "Tasks",
     link: "/tasks",
+  },
+  {
+    icon: FaClock,
+    label: "Session",
+    link: "/session",
   },
   {
     icon: FaPenToSquare,
@@ -61,5 +61,28 @@ export const sideBarBottomMenu = [
     icon: FaArrowRightFromBracket,
     label: "Logout",
     link: "",
+  },
+];
+
+export const createMenu = [
+  {
+    icon: FaListCheck,
+    label: "Tasks",
+    link: "/tasks",
+  },
+  {
+    icon: FaClock,
+    label: "Session",
+    link: "/session",
+  },
+  {
+    icon: FaPenToSquare,
+    label: "Notes",
+    link: "/notes",
+  },
+  {
+    icon: GoGoal,
+    label: "Goals",
+    link: "/goals",
   },
 ];
